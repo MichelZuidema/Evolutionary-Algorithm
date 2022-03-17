@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.TooManyListenersException;
 
 public class RouteCalc {
 
@@ -33,7 +32,7 @@ public class RouteCalc {
             e.printStackTrace();
         }
 
-        int size = scan.nextInt ();
+        int size = scan.nextInt();
         destinations = new int[size];
         packages = new int[size];
         distances = new int[TOTALDEST][TOTALDEST];
@@ -49,6 +48,13 @@ public class RouteCalc {
                 distances[i][j] = scan.nextInt();
             }
         }
+
+        System.out.println(packages.length);
+
+        KandidaatRoute route = new KandidaatRoute(destinations);
+        evalueerKandidaat(route);
+
+        System.out.println();
     }
 
     public void bepaalRoute() {
@@ -56,7 +62,13 @@ public class RouteCalc {
     }
 
     public void evalueerKandidaat(KandidaatRoute kandidaatRoute) {
+        int totalScore = 0;
+        int[] route = kandidaatRoute.getRoute();
         
+        for(int x = 0; x < route.length - 1; x++) 
+            totalScore+= distances[destinations[route[x]]][destinations[route[x+1]]];
+
+        kandidaatRoute.setScore(totalScore);
     }
 
     public void evalueerEpoch() {

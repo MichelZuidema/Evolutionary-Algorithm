@@ -2,6 +2,11 @@ public class KandidaatRoute implements Comparable<KandidaatRoute> {
     private int score;
     private int[] route; 
 
+    public KandidaatRoute(int[] route) {
+        this.route = route;
+        this.score = 0;
+    }
+
     public int getScore() {
         return score;
     }
