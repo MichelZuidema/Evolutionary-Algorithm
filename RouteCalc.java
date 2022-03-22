@@ -23,8 +23,8 @@ public class RouteCalc {
         this.KANDIDATEN = kandidaten;
     }
 
-    public void readSituation(String file){
-        File situationfile = new File (file);
+    public void readSituation(String file) {
+        File situationfile = new File(file);
         Scanner scan = null;
         try {
             scan = new Scanner(situationfile);
@@ -51,8 +51,16 @@ public class RouteCalc {
 
         System.out.println(packages.length);
 
-        KandidaatRoute route = new KandidaatRoute(destinations);
+        // Create test route array
+        int[] routeArray = new int[packages.length];
+        for (int x = 0; x < packages.length; x++) {
+            routeArray[x] = x;
+        }
+
+        KandidaatRoute route = new KandidaatRoute(routeArray);
         evalueerKandidaat(route);
+
+        randomKandidaat();
 
         System.out.println();
     }
@@ -62,12 +70,25 @@ public class RouteCalc {
     }
 
     public void evalueerKandidaat(KandidaatRoute kandidaatRoute) {
+        // The lower the better
         int totalScore = 0;
         int[] route = kandidaatRoute.getRoute();
-        
-        for(int x = 0; x < route.length - 1; x++) 
-            totalScore+= distances[destinations[route[x]]][destinations[route[x+1]]];
 
+        for (int x = 0; x < route.length - 1; x++)
+            totalScore += distances[destinations[route[x]]][destinations[route[x + 1]]];
+
+        // Check if the route starts at 1
+        if (destinations[route[0]] != 1)
+            totalScore += 10000;
+
+        // Calculate distance travelled for every package
+        int packageDistance = 0;
+        for(int x = 1; x < route.length; x++) {
+            packageDistance += distances[destinations[route[0]]][destinations[x]] * packages[x];
+        }
+    
+        totalScore += packageDistance / 2 ;
+        
         kandidaatRoute.setScore(totalScore);
     }
 
@@ -76,7 +97,22 @@ public class RouteCalc {
     }
 
     public KandidaatRoute randomKandidaat() {
-        return null;
+        int[] route = new int[destinations.length];
+
+        // Create route
+        for (int x = 0; x < route.length; x++) {
+            route[x] = x;
+        }
+
+        // Randomize route
+        for (int x = 0; x < route.length; x++) {
+            int random = (int) (Math.random() * route.length);
+            int temp = route[x];
+            route[x] = route[random];
+            route[random] = temp;
+        }
+
+        return new KandidaatRoute(route);
     }
 
     public void startSituatie() {
