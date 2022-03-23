@@ -28,12 +28,12 @@ public class Main {
     public static void main(String[] args) {
         RouteCalc alg = new RouteCalc(1, 100);
         alg.readSituation("1.txt");
-        System.out.println("test");
 
         KandidaatRoute kandidaatRoute;
         int[] route;
         for (int i = 0; i < 100; i++) {
             kandidaatRoute = alg.randomKandidaat();
+            //kandidaatRoute = new KandidaatRoute(new int[]{1, 1, 1, 1});
             route = kandidaatRoute.getRoute();
             System.out.print("[");
             for (int j = 0; j < route.length; j++) {

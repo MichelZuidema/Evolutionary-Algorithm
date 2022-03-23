@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RouteCalc {
@@ -11,6 +12,7 @@ public class RouteCalc {
     private int[] destinations;
     private int[] packages;
     private int[][] distances;
+    private ArrayList<KandidaatRoute> epochKandidaatRoutes;
 
     private int epochTeller;
 
@@ -21,6 +23,7 @@ public class RouteCalc {
     public RouteCalc(int epochs, int kandidaten) {
         this.EPOCHS = epochs;
         this.KANDIDATEN = kandidaten;
+        this.epochKandidaatRoutes = new ArrayList<>();
     }
 
     public void readSituation(String file) {
@@ -57,8 +60,10 @@ public class RouteCalc {
             routeArray[x] = x;
         }
 
-        KandidaatRoute route = new KandidaatRoute(routeArray);
-        evalueerKandidaat(route);
+        //KandidaatRoute route = new KandidaatRoute(routeArray);
+        //int[] routeTest = {1, 1, 1, 1};
+        //KandidaatRoute route = new KandidaatRoute(new int[] {1, 1, 1, 1});
+        //evalueerKandidaat(route);
 
         randomKandidaat();
 
@@ -84,7 +89,7 @@ public class RouteCalc {
         // Calculate distance travelled for every package
         int packageDistance = 0;
         for(int x = 1; x < route.length; x++) {
-            packageDistance += distances[destinations[route[0]]][destinations[x]] * packages[x];
+            packageDistance += distances[destinations[route[0]] - 1][destinations[x] - 1] * packages[x];
         }
     
         totalScore += packageDistance / 2 ;
@@ -93,7 +98,9 @@ public class RouteCalc {
     }
 
     public void evalueerEpoch() {
-
+        for(KandidaatRoute route : epochKandidaatRoutes) {
+            evalueerKandidaat(route);
+        }
     }
 
     public KandidaatRoute randomKandidaat() {
@@ -116,7 +123,9 @@ public class RouteCalc {
     }
 
     public void startSituatie() {
-
+        for(int x = 0; x < KANDIDATEN; x++) {
+            epochKandidaatRoutes.add(randomKandidaat());
+        }
     }
 
     public KandidaatRoute muteer(KandidaatRoute kandidaatRoute) {
