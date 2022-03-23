@@ -29,19 +29,22 @@ public class Main {
         RouteCalc alg = new RouteCalc(1, 100);
         alg.readSituation("1.txt");
 
-        KandidaatRoute kandidaatRoute;
-        int[] route;
-        for (int i = 0; i < 100; i++) {
-            kandidaatRoute = alg.randomKandidaat();
-            //kandidaatRoute = new KandidaatRoute(new int[]{1, 1, 1, 1});
-            route = kandidaatRoute.getRoute();
-            System.out.print("[");
-            for (int j = 0; j < route.length; j++) {
-                System.out.print(route[j] + " ");
-            }
-            alg.evalueerKandidaat(kandidaatRoute);
-            System.out.print("] - score: " + kandidaatRoute.getScore());
-            System.out.println();
-        }
+        // KandidaatRoute kandidaatRoute;
+        // int[] route;
+        // for (int i = 0; i < 1000; i++) {
+        //     kandidaatRoute = alg.randomKandidaat();
+        //     //kandidaatRoute = new KandidaatRoute(new int[]{1, 1, 1, 1});
+        //     route = kandidaatRoute.getRoute();
+        //     System.out.print("[");
+        //     for (int j = 0; j < route.length; j++) {
+        //         System.out.print(route[j] + " ");
+        //     }
+        //     alg.evalueerKandidaat(kandidaatRoute);
+        //     System.out.print("] - score: " + kandidaatRoute.getScore());
+        //     System.out.println();
+        // }
+        alg.startSituatie();
+        alg.evalueerEpoch();
+        alg.volgendeEpoch();
     }
 }

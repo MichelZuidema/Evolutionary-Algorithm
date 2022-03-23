@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 
 public class RouteCalc {
@@ -80,27 +83,28 @@ public class RouteCalc {
         int[] route = kandidaatRoute.getRoute();
 
         for (int x = 0; x < route.length - 1; x++)
-            totalScore += distances[destinations[route[x]]][destinations[route[x + 1]]];
+            totalScore += distances[destinations[route[x]]][destinations[route[x + 1]]] * 100;
 
         // Check if the route starts at 1
         if (destinations[route[0]] != 1)
-            totalScore += 10000;
+            totalScore += 100000;
 
         // Calculate distance travelled for every package
         int packageDistance = 0;
+        int currentDistance = 0;
         for(int x = 1; x < route.length; x++) {
-            packageDistance += distances[destinations[route[0]] - 1][destinations[x] - 1] * packages[x];
+            currentDistance += distances[destinations[route[0]] - 1][destinations[x] - 1];
+            packageDistance += currentDistance * packages[x];
         }
     
-        totalScore += packageDistance / 2 ;
+        totalScore += packageDistance / 10;
         
         kandidaatRoute.setScore(totalScore);
     }
 
     public void evalueerEpoch() {
-        for(KandidaatRoute route : epochKandidaatRoutes) {
+        for(KandidaatRoute route : epochKandidaatRoutes)
             evalueerKandidaat(route);
-        }
     }
 
     public KandidaatRoute randomKandidaat() {
@@ -129,10 +133,27 @@ public class RouteCalc {
     }
 
     public KandidaatRoute muteer(KandidaatRoute kandidaatRoute) {
-        return null;
+        ArrayList<Integer> kPoints = new ArrayList<>();
+        Random rnd = new Random();
+
+        for(int p : kandidaatRoute.getRoute())
+            kPoints.add(p);
+
+        kPoints.add((rnd.nextInt(kPoints.size()) + 1), (rnd.nextInt(TOTALDEST - 1) + 1));
+
+        int[] route = new int[kPoints.size()];
+        for(int x = 0; x < route.length; x++) 
+            route[x] = kPoints.get(x);
+
+        kandidaatRoute.setRoute(route);
+        return kandidaatRoute;
     }
 
     public void volgendeEpoch() {
+       Collections.sort(epochKandidaatRoutes);
 
+       for(KandidaatRoute r : epochKandidaatRoutes)  {
+              System.out.println(r.getScore());
+       }
     }
 }
