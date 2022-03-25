@@ -26,13 +26,13 @@ public class Main {
 
     public static void main(String[] args) {
         int epochs = 1000;
-        int cand = 1000000;
-        
+        int cand = 100000;
+
         // RouteCalc alg = new RouteCalc(epochs, cand);
         // alg.readSituation("1.txt");
         // alg.bepaalRoute();
 
-        testRouteSpecificAmountOfTimes(epochs, cand, 10, "2.txt");
+        testRouteSpecificAmountOfTimes(epochs, cand, 10, "3.txt");
     }
 
     // Test a situation with a specific amount of times
