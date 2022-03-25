@@ -1,7 +1,6 @@
 import java.util.Random;
 
 public class Main {
-
     public static void genereer() {
         Random rand = new Random();
         int[][] temp = new int[250][250];
@@ -26,25 +25,45 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        RouteCalc alg = new RouteCalc(1, 100);
-        alg.readSituation("1.txt");
+        int epochs = 1000;
+        int cand = 1000000;
+        
+        // RouteCalc alg = new RouteCalc(epochs, cand);
+        // alg.readSituation("1.txt");
+        // alg.bepaalRoute();
 
-        // KandidaatRoute kandidaatRoute;
-        // int[] route;
-        // for (int i = 0; i < 1000; i++) {
-        //     kandidaatRoute = alg.randomKandidaat();
-        //     //kandidaatRoute = new KandidaatRoute(new int[]{1, 1, 1, 1});
-        //     route = kandidaatRoute.getRoute();
-        //     System.out.print("[");
-        //     for (int j = 0; j < route.length; j++) {
-        //         System.out.print(route[j] + " ");
-        //     }
-        //     alg.evalueerKandidaat(kandidaatRoute);
-        //     System.out.print("] - score: " + kandidaatRoute.getScore());
-        //     System.out.println();
-        // }
-        alg.startSituatie();
-        alg.evalueerEpoch();
-        alg.volgendeEpoch();
+        testRouteSpecificAmountOfTimes(epochs, cand, 10, "2.txt");
+    }
+
+    // Test a situation with a specific amount of times
+    private static void testRouteSpecificAmountOfTimes(int epochs, int candidates, int times, String file) {
+        int[] scores = new int[times];
+
+        for (int x = 0; x < times; x++) {
+            RouteCalc alg = new RouteCalc(epochs, candidates);
+            alg.readSituation(file);
+            alg.bepaalRoute();
+
+            scores[x] = alg.getScore();
+        }
+
+        System.out.print(getStatsForTest(scores));
+    }
+
+    // Get min / max / average stats for a int array of scores
+    private static String getStatsForTest(int[] scores) {
+        int min = scores[0];
+        int max = scores[0];
+        int sum = 0;
+        for (int x = 0; x < scores.length; x++) {
+            if (scores[x] < min) {
+                min = scores[x];
+            }
+            if (scores[x] > max) {
+                max = scores[x];
+            }
+            sum += scores[x];
+        }
+        return "Min: " + min + " Max: " + max + " Average: " + (sum / scores.length);
     }
 }

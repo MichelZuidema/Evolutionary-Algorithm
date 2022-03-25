@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class KandidaatRoute implements Comparable<KandidaatRoute> {
     private int score;
     private int[] route; 
@@ -23,6 +25,15 @@ public class KandidaatRoute implements Comparable<KandidaatRoute> {
         this.route = route;
     }
 
+    public KandidaatRoute copy() {
+        int[] copy = new int[route.length];
+
+        for (int x = 0; x < route.length; x++) 
+            copy[x] = route[x];
+
+        return new KandidaatRoute(copy);
+    } 
+
     @Override
     public int compareTo(KandidaatRoute o) {
         if (this.score < o.getScore()) {
@@ -32,5 +43,10 @@ public class KandidaatRoute implements Comparable<KandidaatRoute> {
         } else {
             return 0;
         }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(this.route);
     }
 }
