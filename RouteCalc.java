@@ -33,9 +33,14 @@ public class RouteCalc {
     public void bepaalRoute() {
         startSituatie();
         evalueerEpoch();
+
         Collections.sort(epochKandidaatRoutes);
         if(this.bestRoute == null) 
             this.bestRoute = epochKandidaatRoutes.get(0);
+
+        while(epochTeller < EPOCHS) {
+            volgendeEpoch();
+        }
 
         System.out.println("De beste route is: " + this.bestRoute.toString() + " - Score: " + this.bestRoute.getScore() + " - Hoogste score: " + this.epochKandidaatRoutes.get(this.epochKandidaatRoutes.size() - 1).getScore());
     }
@@ -77,7 +82,7 @@ public class RouteCalc {
         int[] route = kandidaatRoute.getRoute();
 
         for (int x = 0; x < route.length - 1; x++)
-            totalScore += distances[destinations[route[x]]][destinations[route[x + 1]]];
+            totalScore += distances[destinations[route[x]] - 1][destinations[route[x + 1]] - 1];
 
         // Check if the route starts at 1
         if (destinations[route[0]] != 1)
@@ -132,8 +137,13 @@ public class RouteCalc {
 
         for (int p : kandidaatRoute.getRoute())
             kPoints.add(p);
+        
+        int kPoint1 = rnd.nextInt(kPoints.size());
+        int kPoint2 = rnd.nextInt(kPoints.size());
 
-        kPoints.add((rnd.nextInt(kPoints.size())), (rnd.nextInt(TOTALDEST - 1)));
+        int temp = kPoints.get(kPoint1);
+        kPoints.set(kPoint1, kPoints.get(kPoint2));
+        kPoints.set(kPoint2, temp);
 
         int[] route = new int[kPoints.size()];
         for (int x = 0; x < route.length; x++)

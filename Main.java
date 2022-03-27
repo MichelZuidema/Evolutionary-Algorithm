@@ -26,17 +26,18 @@ public class Main {
 
     public static void main(String[] args) {
         int epochs = 1000;
-        int cand = 100000;
+        int cand = 10000;
+        String file = "1.txt";
 
         // RouteCalc alg = new RouteCalc(epochs, cand);
-        // alg.readSituation("1.txt");
+        // alg.readSituation(file);
         // alg.bepaalRoute();
 
-        testRouteSpecificAmountOfTimes(epochs, cand, 10, "3.txt");
+        testRouteSpecificAmountOfTimes(epochs, cand, file, 10);
     }
 
     // Test a situation with a specific amount of times
-    private static void testRouteSpecificAmountOfTimes(int epochs, int candidates, int times, String file) {
+    private static void testRouteSpecificAmountOfTimes(int epochs, int candidates, String file, int times) {
         int[] scores = new int[times];
 
         for (int x = 0; x < times; x++) {
